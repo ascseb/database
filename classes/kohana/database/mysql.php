@@ -14,37 +14,7 @@ class Kohana_Database_MySQL extends Database {
 	 */
 	protected static $_types = array
 	(
-		'bool'                      => array('type' => 'bool'),
-		'bigint unsigned'           => array('type' => 'int', 'min' => '0', 'max' => '18446744073709551615'),
-		'datetime'                  => array('type' => 'string'),
-		'decimal unsigned'          => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
-		'double'                    => array('type' => 'float'),
-		'double precision unsigned' => array('type' => 'float', 'min' => '0'),
-		'double unsigned'           => array('type' => 'float', 'min' => '0'),
-		'enum'                      => array('type' => 'string'),
-		'fixed'                     => array('type' => 'float', 'exact' => TRUE),
-		'fixed unsigned'            => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
-		'float unsigned'            => array('type' => 'float', 'min' => '0'),
-		'int unsigned'              => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
-		'integer unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
-		'longblob'                  => array('type' => 'string', 'binary' => TRUE),
-		'longtext'                  => array('type' => 'string'),
-		'mediumblob'                => array('type' => 'string', 'binary' => TRUE),
-		'mediumint'                 => array('type' => 'int', 'min' => '-8388608', 'max' => '8388607'),
-		'mediumint unsigned'        => array('type' => 'int', 'min' => '0', 'max' => '16777215'),
-		'mediumtext'                => array('type' => 'string'),
-		'national varchar'          => array('type' => 'string'),
-		'numeric unsigned'          => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
-		'nvarchar'                  => array('type' => 'string'),
-		'real unsigned'             => array('type' => 'float', 'min' => '0'),
-		'set'                       => array('type' => 'string'),
-		'smallint unsigned'         => array('type' => 'int', 'min' => '0', 'max' => '65535'),
-		'text'                      => array('type' => 'string'),
-		'tinyblob'                  => array('type' => 'string', 'binary' => TRUE),
-		'tinyint'                   => array('type' => 'int', 'min' => '-128', 'max' => '127'),
-		'tinyint unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '255'),
-		'tinytext'                  => array('type' => 'string'),
-		'year'                      => array('type' => 'string'),
+
 	);
 
 	// Use SET NAMES to set the character set
@@ -52,6 +22,158 @@ class Kohana_Database_MySQL extends Database {
 
 	// MySQL uses a backtick for identifiers
 	protected $_identifier = '`';
+	
+	public function get_type($datatype)
+	{
+		// Make sure its lowercase
+		$datatype = strtolower($datatype);
+		
+		switch($datatype)
+		{
+			// String
+			case 'text':
+			case 'tinytext':
+			case 'set':
+			case 'nvarchar':
+			case 'national varchar':
+			case 'mediumtext':
+			case 'longtext':
+			case 'enum':
+				return array(
+					'type'	=> 'string',
+					'exact'	=> FALSE
+				);
+				
+			// Boolean
+			case 'bool':
+				return array(
+					'type'	=> 'bool'
+				);
+			
+			// Integers
+			case 'bigint unsigned':
+				return array(
+					'type'	=> 'int',
+					'min'	=> 0,
+					'max'	=> 18446744073709551615
+				);
+			
+			case 'integer unsigned':
+			case 'int unsigned':
+				return array(
+					'type'	=> 'int',
+					'exact'	=> FALSE,
+					'min'	=> 0,
+					'max'	=> 4294967295
+				);
+				
+			case 'mediumint':
+				return array(
+					'type'	=> 'int',
+					'exact'	=> FALSE,
+					'min'	=> -8388608,
+					'max'	=> 8388608
+				);
+				
+			case 'mediumint unsigned':
+				return array(
+					'type'	=> 'int',
+					'exact'	=> FALSE,
+					'min'	=> 0,
+					'max'	=> 16777215
+				);
+				
+			case 'smallint unsigned':
+				return array(
+					'type'	=> 'int',
+					'exact'	=> FALSE,
+					'min'	=> 0,
+					'max'	=> 65535
+				);
+				
+			case 'tinyint':
+				return array(
+					'type'	=> 'int',
+					'exact'	=> FALSE,
+					'min'	=> -128,
+					'max'	=> 127
+				);
+				
+			case 'tinyint unsigned':
+				return array(
+					'type'	=> 'int',
+					'exact'	=> FALSE,
+					'min'	=> 0,
+					'max'	=> 255
+				);
+				
+			// Float
+			
+			case 'fixed':
+				return array(
+					'type'	=> 'float',
+					'exact'	=> TRUE
+				);
+				
+			case 'double':
+				return array(
+					'type'	=> 'float',
+					'exact'	=> FALSE
+				);
+			
+			case 'double unsigned':
+			case 'double precision unsigned':
+				return array(
+					'type'	=> 'float',
+					'exact'	=> FALSE,
+					'min'	=> 0
+				);
+			
+			case 'fixed unsigned':
+			case 'decimal unsigned':
+				return array(
+					'type'	=> 'float',
+					'exact'	=> TRUE,
+					'min'	=> 0
+				);
+				
+			case 'real unsigned':
+			case 'float unsigned':
+				return array(
+					'type'	=> 'float',
+					'min'	=> 0
+				);
+				
+			case 'numeric unsigned':
+				return array(
+					'type'	=> 'float',
+					'exact'	=> TRUE,
+					'min'	=> 0
+				);
+			
+			// Datetime
+			case 'year':
+				return array(
+					'type'		=> 'datetime',
+					'format'	=>	'Y',
+				);
+			case 'datetime':
+				return array(
+					'type'		=> 'datetime',
+					'format'	=> 'Y-m-d H:i:s'
+				);
+				
+			// Binaries
+			case 'longblob':
+			case 'mediumblob':
+			case 'tinyblob':
+				return array(
+					'exact'	=> FALSE
+				);
+		}
+		
+		return parent::get_type($datatype);
+	}
 
 	public function connect()
 	{
