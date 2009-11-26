@@ -9,14 +9,6 @@
  */
 class Kohana_Database_MySQL extends Database {
 
-	/**
-	 * @var array   MySQL types
-	 */
-	protected static $_types = array
-	(
-
-	);
-
 	// Use SET NAMES to set the character set
 	protected static $_set_names;
 
@@ -375,22 +367,12 @@ class Kohana_Database_MySQL extends Database {
 
 		$count = 0;
 		$columns = array();
+		
 		foreach ($result as $row)
 		{
 			list($type, $length) = $this->_parse_type($row['Type']);
-
-			if (isset(Database_MySQL::$_types[$type]))
-			{
-				$column = Database_MySQL::$_types[$type];
-			}
-			elseif (isset(Database::$_types[$type]))
-			{
-				$column = Database::$_types[$type];
-			}
-			else
-			{
-				$column = array();
-			}
+			
+			$column = array();
 
 			$column['column_name']      = $row['Field'];
 			$column['column_default']   = $row['Default'];
