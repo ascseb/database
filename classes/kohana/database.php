@@ -261,6 +261,7 @@ abstract class Kohana_Database {
 			case 'integer':
 				return array(
 					'type'	=> 'int',
+					'exact'	=> FALSE,
 					'min'	=> -2147483648,
 					'max'	=> 2147483647
 				);
@@ -269,6 +270,7 @@ abstract class Kohana_Database {
 			case 'smallint':
 				return array(
 					'type'	=> 'int',
+					'exact'	=> FALSE,
 					'min'	=> -32768,
 					'max'	=> 32767
 				);
@@ -277,6 +279,7 @@ abstract class Kohana_Database {
 			case 'bigint':
 				return array(
 					'type'	=> 'int',
+					'exact'	=> FALSE,
 					'min'	=> -9223372036854775808,
 					'max'	=> 9223372036854775807
 				);
@@ -303,7 +306,6 @@ abstract class Kohana_Database {
 				return array(
 					'type'	=> 'bool'
 				);
-				
 		}
 	}
 
