@@ -162,9 +162,10 @@ class Kohana_Database_MySQL extends Database {
 				return array(
 					'exact'	=> FALSE
 				);
+				
+			default:
+				return parent::get_type($datatype);
 		}
-		
-		return parent::get_type($datatype);
 	}
 
 	public function connect()

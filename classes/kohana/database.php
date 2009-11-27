@@ -306,6 +306,11 @@ abstract class Kohana_Database {
 				return array(
 					'type'	=> 'bool'
 				);
+				
+			default:
+				throw new Kohana_Exception('Unable to match datatype :dt', array(
+					'dt' => $datatype
+				));
 		}
 	}
 
