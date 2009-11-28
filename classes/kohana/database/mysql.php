@@ -46,57 +46,51 @@ class Kohana_Database_MySQL extends Database {
 			case 'bigint unsigned':
 				return array(
 					'type'	=> 'int',
-					'min'	=> 0,
-					'max'	=> 18446744073709551615
+					'min'	=> '0',
+					'max'	=> '18446744073709551615'
 				);
 			
 			case 'integer unsigned':
 			case 'int unsigned':
 				return array(
 					'type'	=> 'int',
-					'exact'	=> FALSE,
-					'min'	=> 0,
-					'max'	=> 4294967295
+					'min'	=> '0',
+					'max'	=> '4294967295'
 				);
 				
 			case 'mediumint':
 				return array(
 					'type'	=> 'int',
-					'exact'	=> FALSE,
-					'min'	=> -8388608,
-					'max'	=> 8388608
+					'min'	=> '-8388608',
+					'max'	=> '8388608'
 				);
 				
 			case 'mediumint unsigned':
 				return array(
 					'type'	=> 'int',
-					'exact'	=> FALSE,
-					'min'	=> 0,
-					'max'	=> 16777215
+					'min'	=> '0',
+					'max'	=> '16777215'
 				);
 				
 			case 'smallint unsigned':
 				return array(
 					'type'	=> 'int',
-					'exact'	=> FALSE,
-					'min'	=> 0,
-					'max'	=> 65535
+					'min'	=> '0',
+					'max'	=> '65535'
 				);
 				
 			case 'tinyint':
 				return array(
 					'type'	=> 'int',
-					'exact'	=> FALSE,
-					'min'	=> -128,
-					'max'	=> 127
+					'min'	=> '-128',
+					'max'	=> '127'
 				);
 				
 			case 'tinyint unsigned':
 				return array(
 					'type'	=> 'int',
-					'exact'	=> FALSE,
-					'min'	=> 0,
-					'max'	=> 255
+					'min'	=> '0',
+					'max'	=> '255'
 				);
 				
 			// Float
@@ -146,7 +140,7 @@ class Kohana_Database_MySQL extends Database {
 			// Datetime
 			case 'year':
 				return array(
-					'type'		=> 'datetime',
+					'type'		=>	'datetime',
 					'format'	=>	'Y',
 				);
 			case 'datetime':
@@ -160,6 +154,7 @@ class Kohana_Database_MySQL extends Database {
 			case 'mediumblob':
 			case 'tinyblob':
 				return array(
+					'type'	=> 'binary',
 					'exact'	=> FALSE
 				);
 				
