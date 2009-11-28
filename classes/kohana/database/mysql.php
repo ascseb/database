@@ -370,38 +370,38 @@ class Kohana_Database_MySQL extends Database {
 			
 			$column = array();
 
-			$column['COLUMN_NAME']      = $row['Field'];
-			$column['COLUMN_DEFAULT']   = $row['Default'];
-			$column['DATA_TYPE']        = $type;
-			$column['IS_NULLABLE']      = $row['Null'];
-			$column['ORDINAL_POSITION'] = ++$count;
+			$column['column_name']      = $row['Field'];
+			$column['column_default']   = $row['Default'];
+			$column['data_type']        = $type;
+			$column['is_nullable']      = $row['Null'];
+			$column['ordinal_position'] = ++$count;
 
-			switch (strtolower($column['DATA_TYPE']))
+			switch (strtolower($column['data_type']))
 			{
 				case 'binary':
 				case 'char':
 				case 'varbinary':
 				case 'varchar':
-					$column['CHARACTER_MAXIMUM_LENGTH'] = $length;
+					$column['character_maximum_length'] = $length;
 				break;
 				case 'decimal':
-					list($column['NUMERIC_PRECISION'], $column['NUMERIC_SCALE']) = explode(',', $length);
+					list($column['numeric_precision'], $column['numeric_scale']) = explode(',', $length);
 				break;
 				case 'tinyblob':
 				case 'tinytext':
-					$column['CHARACTER_MAXIMUM_LENGTH'] = 255;
+					$column['character_maximum_length'] = 255;
 				break;
 				case 'blob':
 				case 'text':
-					$column['CHARACTER_MAXIMUM_LENGTH'] = 65535;
+					$column['character_maximum_length'] = 65535;
 				break;
 				case 'mediumblob':
 				case 'mediumtext':
-					$column['CHARACTER_MAXIMUM_LENGTH'] = 16777215;
+					$column['character_maximum_length'] = 16777215;
 				break;
 				case 'longblob':
 				case 'longtext':
-					$column['CHARACTER_MAXIMUM_LENGTH'] = 4294967295;
+					$column['character_maximum_length'] = 4294967295;
 				break;
 			}
 
