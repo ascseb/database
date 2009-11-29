@@ -112,7 +112,7 @@ class Kohana_Database_MySQL extends Database {
 				return array(
 					'type'	=> 'float',
 					'exact'	=> FALSE,
-					'min'	=> 0
+					'min'	=> '0'
 				);
 			
 			case 'fixed unsigned':
@@ -120,21 +120,21 @@ class Kohana_Database_MySQL extends Database {
 				return array(
 					'type'	=> 'float',
 					'exact'	=> TRUE,
-					'min'	=> 0
+					'min'	=> '0'
 				);
 				
 			case 'real unsigned':
 			case 'float unsigned':
 				return array(
 					'type'	=> 'float',
-					'min'	=> 0
+					'min'	=> '0'
 				);
 				
 			case 'numeric unsigned':
 				return array(
 					'type'	=> 'float',
 					'exact'	=> TRUE,
-					'min'	=> 0
+					'min'	=> '0'
 				);
 			
 			// Datetime
