@@ -320,33 +320,7 @@ abstract class Kohana_Database {
 	 * @param   string   table to search for
 	 * @return  array
 	 */
-	public function list_tables($like = NULL)
-	{
-		// This method is slow, but it works, database drivers should overwrite this where possible.
-		// Continue to use the standardised form given at:
-		// http://www.devx.com/getHelpOn/10MinuteSolution/20561
-		
-		if($like !== NULL)
-		{
-			// Get all tables which match the like statement.
-			$result = $this->query(Database::SELECT, 
-				'SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_SCHEMA = '.$this->quote($database).'
-					AND TABLE_NAME LIKE '.$this->quote($this->table_prefix().$like), FALSE);
-		}
-		else
-		{
-			// Get all tables in the selected database.
-			$result = $this->query(Database::SELECT, 
-				'SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_SCHEMA = '.$this->quote($database), FALSE);
-		}
-		
-		foreach($result as & $key => $row)
-		{
-			$key = $row['TABLE_NAME'];
-		}
-		
-		return $result;
-	}
+	abstract public function list_tables($like = NULL);
 
 	/**
 	 * Lists all of the columns in a table. Optionally, a LIKE string can be
@@ -356,29 +330,7 @@ abstract class Kohana_Database {
 	 * @param   string  column to search for
 	 * @return  array
 	 */
-	public function list_columns($table, $like = NULL)
-	{
-		if($like !== NULL)
-		{
-			$result = $this->query(Database::SELECT, 
-				'SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_SCHEMA = '.$this->quote($database).'
-					AND TABLE_NAME LIKE '.$this->quote($this->table_prefix().$table).'
-					AND COLUMN_NAME LIKE '.$this->quote($like), FALSE);
-		}
-		else
-		{
-			$result = $this->query(Database::SELECT, 
-				'SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_SCHEMA = '.$this->quote($database).'
-					AND TABLE_NAME LIKE '.$this->quote($this->table_prefix().$table), FALSE);
-		}
-		
-		foreach($result as & $key => $row)
-		{
-			$key = $row['COLUMN_NAME'];
-		}
-		
-		return $result;
-	}
+	abstract public function list_columns($table, $like = NULL);
 
 	/**
 	 * Extracts the text between parentheses, if any
