@@ -16,6 +16,63 @@ abstract class Kohana_Database {
 	const DELETE =  4;
 
 	/**
+	 * @var array   SQL standard types
+	 */
+	protected static $_types = array
+	(
+		// SQL-92
+		'bit'                        => array('type' => 'string', 'exact' => TRUE),
+		'bit varying'                => array('type' => 'string'),
+		'char'                       => array('type' => 'string', 'exact' => TRUE),
+		'char varying'               => array('type' => 'string'),
+		'character'                  => array('type' => 'string', 'exact' => TRUE),
+		'character varying'          => array('type' => 'string'),
+		'date'                       => array('type' => 'string'),
+		'dec'                        => array('type' => 'float', 'exact' => TRUE),
+		'decimal'                    => array('type' => 'float', 'exact' => TRUE),
+		'double precision'           => array('type' => 'float'),
+		'float'                      => array('type' => 'float'),
+		'int'                        => array('type' => 'int', 'min' => '-2147483648', 'max' => '2147483647'),
+		'integer'                    => array('type' => 'int', 'min' => '-2147483648', 'max' => '2147483647'),
+		'interval'                   => array('type' => 'string'),
+		'national char'              => array('type' => 'string', 'exact' => TRUE),
+		'national char varying'      => array('type' => 'string'),
+		'national character'         => array('type' => 'string', 'exact' => TRUE),
+		'national character varying' => array('type' => 'string'),
+		'nchar'                      => array('type' => 'string', 'exact' => TRUE),
+		'nchar varying'              => array('type' => 'string'),
+		'numeric'                    => array('type' => 'float', 'exact' => TRUE),
+		'real'                       => array('type' => 'float'),
+		'smallint'                   => array('type' => 'int', 'min' => '-32768', 'max' => '32767'),
+		'time'                       => array('type' => 'string'),
+		'time with time zone'        => array('type' => 'string'),
+		'timestamp'                  => array('type' => 'string'),
+		'timestamp with time zone'   => array('type' => 'string'),
+		'varchar'                    => array('type' => 'string'),
+
+		// SQL:1999
+		'binary large object'             => array('type' => 'string', 'binary' => TRUE),
+		'blob'                            => array('type' => 'string', 'binary' => TRUE),
+		'boolean'                         => array('type' => 'bool'),
+		'char large object'               => array('type' => 'string'),
+		'character large object'          => array('type' => 'string'),
+		'clob'                            => array('type' => 'string'),
+		'national character large object' => array('type' => 'string'),
+		'nchar large object'              => array('type' => 'string'),
+		'nclob'                           => array('type' => 'string'),
+		'time without time zone'          => array('type' => 'string'),
+		'timestamp without time zone'     => array('type' => 'string'),
+
+		// SQL:2003
+		'bigint'    => array('type' => 'int', 'min' => '-9223372036854775808', 'max' => '9223372036854775807'),
+
+		// SQL:2008
+		'binary'            => array('type' => 'string', 'binary' => TRUE, 'exact' => TRUE),
+		'binary varying'    => array('type' => 'string', 'binary' => TRUE),
+		'varbinary'         => array('type' => 'string', 'binary' => TRUE),
+	);
+
+	/**
 	 * @var  array  Database instances
 	 */
 	public static $instances = array();
@@ -159,159 +216,6 @@ abstract class Kohana_Database {
 		return $this->query(Database::SELECT, 'SELECT COUNT(*) AS total_row_count FROM '.$table, FALSE)
 			->get('total_row_count');
 	}
-	
-	/**
-	 * Returns a normalized array describing the SQL datatype.
-	 *
-	 * @param   string    the name of the datatype.
-	 * @return  array	the description array.
-	 */
-	public function get_type($data_type)
-	{
-		// Make sure its lowercase
-		$datatype = strtolower($datatype);
-		
-		switch($data_type)
-		{
-			// Datetime
-			case 'date':
-				return array(
-					'type'		=> 'datetime',
-					'format'	=> 'Y-m-d'
-				);
-				
-			case 'time':
-			case 'time without time zone':
-				return array(
-					'type'		=> 'datetime',
-					'format'	=> 'H:i:s.u'
-				);
-				
-			case 'time with time zone':
-				return array(
-					'type'		=> 'datetime',
-					'format'	=> 'H:i:s.u P'
-				);
-			
-			case 'timestamp':
-			case 'timestamp without time zone':
-				return array(
-					'type'		=> 'datetime',
-					'format'	=> 'Y-m-d H:i:s.u'
-				);
-				
-			case 'timestamp with time zone':
-				return array(
-					'type'		=> 'datetime',
-					'format'	=> 'Y-m-d H:i:s.u P'
-				);
-			
-			// String
-			case 'interval':
-			case 'bit varying':
-			case 'char varying':
-			case 'character varying':
-			case 'character large object':
-			case 'char large object':
-			case 'national char varying':
-			case 'national character varying':
-			case 'national character large object':
-			case 'nchar large object':
-			case 'clob':
-			case 'nclob':
-			case 'nchar varying':
-				return array(
-					'type' 	=> 'string',
-					'exact'	=> FALSE
-				);
-			
-			// String (Exact)
-			case 'varchar':
-			case 'bit':
-			case 'char':
-			case 'character':
-			case 'national char':
-			case 'national character':
-			case 'nchar':
-				return array(
-					'type' 	=> 'string',
-					'exact' => TRUE
-				);
-				
-			// Float
-			case 'double precision':
-			case 'float':
-			case 'real':
-				return array(
-					'type'	=> 'float',
-					'exact'	=> FALSE
-				);
-				
-			// Float (Exact)
-			case 'dec':
-			case 'decimal':
-			case 'numeric':
-				return array(
-					'type'	=> 'float',
-					'exact'	=> TRUE
-				);
-				
-			// Int
-			case 'int':
-			case 'integer':
-				return array(
-					'type'	=> 'int',
-					'min'	=> '-2147483648',
-					'max'	=> '2147483647'
-				);
-				
-			// Smallint
-			case 'smallint':
-				return array(
-					'type'	=> 'int',
-					'min'	=> '-32768',
-					'max'	=> '32767'
-				);
-			
-			// Bigint
-			case 'bigint':
-				return array(
-					'type'	=> 'int',
-					'min'	=> '-9223372036854775808',
-					'max'	=> '9223372036854775807'
-				);
-			
-			// Binary
-			case 'blob':
-			case 'binary large object':
-			case 'binary varying':
-			case 'varbinary':
-				return array(
-					'type'	=> 'binary',
-					'exact'	=> FALSE
-				);
-				
-			// Binary (Exact)
-			case 'binary':
-				return array(
-					'type'	=> 'binary',
-					'exact'	=> TRUE
-				);
-				
-			// Boolean
-			case 'boolean':
-				return array(
-					'type'	=> 'bool'
-				);
-				
-			default:
-				// Return the default type
-				return array(
-					'type'	=> 'string',
-					'exact'	=> FALSE
-				);
-		}
-	}
 
 	/**
 	 * List all of the tables in the database. Optionally, a LIKE string can
@@ -379,13 +283,9 @@ abstract class Kohana_Database {
 		{
 			return 'NULL';
 		}
-		elseif ($value === TRUE)
+		elseif ($value === TRUE OR $value === FALSE)
 		{
-			return "'1'";
-		}
-		elseif ($value === FALSE)
-		{
-			return "'0'";
+			return $value ? 'TRUE' : 'FALSE';
 		}
 		elseif (is_object($value))
 		{
