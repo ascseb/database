@@ -305,7 +305,7 @@ class Kohana_Database_MySQL extends Database {
 				case 'binary':
 				case 'string':
 					$column['character_maximum_length'] = isset($length) ? $length : $column['character_maximum_length'];
-					$column['character_octet_length'] = $column['character_maximum_length'] / 8;
+					$column['character_octet_length'] = ceil($column['character_maximum_length'] / 8);
 					break;
 				break;
 				case 'float':
