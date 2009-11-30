@@ -301,13 +301,16 @@ class Kohana_Database_MySQL extends Database {
 				case 'int':
 					$column['numeric_precision'] = 0;
 					$column['numeric_scale'] = isset($length) ? $length : log($column['max'], 2);
+					break;
 				case 'binary':
 				case 'string':
 					$column['character_maximum_length'] = isset($length) ? $length : $column['character_maximum_length'];
 					$column['character_octet_length'] = $column['character_maximum_length'] / 8;
+					break;
 				break;
 				case 'float':
 					list($column['numeric_precision'], $column['numeric_scale']) = explode(',', $length);
+					break;
 			}
 
 			$columns[$row['Field']] = $column;
