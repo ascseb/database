@@ -142,32 +142,32 @@ class Kohana_Database_MySQL extends Database {
 			// Exact floating point types
 			'decimal'					=> array('type'	=> 'float', 'exact' => TRUE),
 			'fixed'                     => array('type' => 'float', 'exact' => TRUE),
-			'decimal unsigned'          => array('type' => 'float', 'exact' => TRUE,	'min' => '0'),
-			'numeric unsigned'          => array('type' => 'float', 'exact' => TRUE,	'min' => '0'),
-			'fixed unsigned'            => array('type' => 'float', 'exact' => TRUE,	'min' => '0'),
+			'decimal unsigned'          => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
+			'numeric unsigned'          => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
+			'fixed unsigned'            => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
 			
 			// Non-exact floating point types
 			'double'                    => array('type' => 'float', 'exact' => FALSE),
-			'double precision unsigned' => array('type' => 'float', 'exact' => FALSE,	'min' => '0'),
-			'double unsigned'           => array('type' => 'float', 'exact' => FALSE,	'min' => '0'),
-			'real unsigned'             => array('type' => 'float', 'exact' => FALSE,	'min' => '0'),
-			'float unsigned'            => array('type' => 'float', 'exact' => FALSE,	'min' => '0'),
+			'double precision unsigned' => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
+			'double unsigned'           => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
+			'real unsigned'             => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
+			'float unsigned'            => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
 		
 			// Integer types
-			'bigint unsigned'           => array('type' => 'int', 'min' => '0', 		'max' => '18446744073709551615'),
-			'int unsigned'              => array('type' => 'int', 'min' => '0',			'max' => '4294967295'),
-			'integer unsigned'          => array('type' => 'int', 'min' => '0',			'max' => '4294967295'),
-			'mediumint'                 => array('type' => 'int', 'min' => '-8388608',	'max' => '8388607'),
-			'mediumint unsigned'        => array('type' => 'int', 'min' => '0',			'max' => '16777215'),
-			'smallint unsigned'         => array('type' => 'int', 'min' => '0',			'max' => '65535'),
-			'tinyint'                   => array('type' => 'int', 'min' => '-128',		'max' => '127'),
-			'tinyint unsigned'          => array('type' => 'int', 'min' => '0',			'max' => '255'),
+			'bigint unsigned'           => array('type' => 'int', 'min' => '0', 'max' => '18446744073709551615'),
+			'int unsigned'              => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
+			'integer unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
+			'mediumint'                 => array('type' => 'int', 'min' => '-8388608', 'max' => '8388607'),
+			'mediumint unsigned'        => array('type' => 'int', 'min' => '0', 'max' => '16777215'),
+			'smallint unsigned'         => array('type' => 'int', 'min' => '0', 'max' => '65535'),
+			'tinyint'                   => array('type' => 'int', 'min' => '-128', 'max' => '127'),
+			'tinyint unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '255'),
 		
 			// String types
-			'longtext'                  => array('type' => 'string', 'exact' => FALSE,  'character_maximum_length' => '4294967295'),
-			'mediumtext'                => array('type' => 'string', 'exact' => FALSE,  'character_maximum_length' => '16777215'),
-			'text'                      => array('type' => 'string', 'exact' => FALSE,	'character_maximum_length' => '65535'),
-			'tinytext'                  => array('type' => 'string', 'exact' => FALSE,	'character_maximum_length' => '255'),
+			'longtext'                  => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '4294967295'),
+			'mediumtext'                => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '16777215'),
+			'text'                      => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '65535'),
+			'tinytext'                  => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '255'),
 			'enum'                      => array('type' => 'string', 'exact' => FALSE),
 			'national varchar'          => array('type' => 'string', 'exact' => FALSE),
 			'nvarchar'                  => array('type' => 'string', 'exact' => FALSE),
@@ -178,11 +178,13 @@ class Kohana_Database_MySQL extends Database {
 			'year'                      => array('type' => 'datetime', 'format' => 'Y'),
 		);
 		
+		// If we can find the datatype return it
 		if(isset($types[$datatype]))
 		{
 			return $types[$datatype];
 		}
 		
+		// Otherwise overload it to the parent.
 		return parent::get_type($datatype);
 	}
 

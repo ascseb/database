@@ -223,6 +223,7 @@ abstract class Kohana_Database {
 			'varbinary'         => array('type' => 'binary', 'exact' => FALSE),
 		);
 		
+		// Return the datatype or just an empty array if none was found.
 		return arr::get($types, $datatype, array());
 	}
 
