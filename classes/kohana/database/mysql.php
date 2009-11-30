@@ -268,28 +268,25 @@ class Kohana_Database_MySQL extends Database {
 		foreach ($result as $row)
 		{
 			list($type, $length) = $this->_parse_type($row['Type']);
-
-			if (isset(Database_MySQL::$_types[$type]))
-			{
-				$column = Database_MySQL::$_types[$type];
-			}
-			elseif (isset(Database::$_types[$type]))
-			{
-				$column = Database::$_types[$type];
-			}
-			else
-			{
-				$column = array();
-			}
+			
+			$column = array();
 
 			$column['column_name']      = $row['Field'];
 			$column['column_default']   = $row['Default'];
+			$column['column_type']		= $row['Type'];
 			$column['data_type']        = $type;
-			$column['is_nullable']      = ($row['Null'] == 'YES');
+			$column['is_nullable']      = $row['Null'];
 			$column['ordinal_position'] = ++$count;
+			$column['extra']			= $row['Extra'];
+			$column['column_key']		= $row['Key'];
+			
+			$data_type = $this->get_type($type);
 
 			switch ($column['data_type'])
 			{
+				case 'int':
+					$column['numeric_precision'] = $length;
+					$column['numeric_scale'] = 0;
 				case 'binary':
 				case 'char':
 				case 'varbinary':
