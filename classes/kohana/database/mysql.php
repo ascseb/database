@@ -246,20 +246,20 @@ class Kohana_Database_MySQL extends Database {
 		if (is_string($like))
 		{
 			// Search for table names
-			$result = $this->query(Database::SELECT, 'SHOW TABLES LIKE '.$this->quote($like), FALSE);
+			$result = $this->query(Database::SELECT, 'SHOW FULL TABLES LIKE '.$this->quote($like), FALSE);
 		}
 		else
 		{
 			// Find all table names
-			$result = $this->query(Database::SELECT, 'SHOW TABLES', FALSE);
+			$result = $this->query(Database::SELECT, 'SHOW FULL TABLES', FALSE);
 		}
 
 		$tables = array();
 		foreach ($result as $row)
 		{
 			$tables[current($row)] = array(
-				'table_name' => current($row),
-				'table_type' => 'BASE TABLE'
+				'table_name' => reset($row),
+				'table_type' => next($row)
 			);
 		}
 
@@ -277,12 +277,12 @@ class Kohana_Database_MySQL extends Database {
 		if (is_string($like))
 		{
 			// Search for column names
-			$result = $this->query(Database::SELECT, 'SHOW COLUMNS FROM '.$table.' LIKE '.$this->quote($like), FALSE);
+			$result = $this->query(Database::SELECT, 'SHOW FULL COLUMNS FROM '.$table.' LIKE '.$this->quote($like), FALSE);
 		}
 		else
 		{
 			// Find all column names
-			$result = $this->query(Database::SELECT, 'SHOW COLUMNS FROM '.$table, FALSE);
+			$result = $this->query(Database::SELECT, 'SHOW FULL COLUMNS FROM '.$table, FALSE);
 		}
 
 		$count = 0;
@@ -302,6 +302,8 @@ class Kohana_Database_MySQL extends Database {
 			$column['extra']			= $row['Extra'];
 			$column['column_key']		= $row['Key'];
 			$column['table_name']		= $raw_table;
+			$column['privileges']		= explode(',', $row['Privileges']);
+			$column['comment']			= $row['Comment'];
 			
 			switch ($column['type'])
 			{
