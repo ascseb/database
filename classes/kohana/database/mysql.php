@@ -265,6 +265,9 @@ class Kohana_Database_MySQL extends Database {
 
 	public function list_columns($table, $like = NULL)
 	{
+		// Save the original name of the table with prefix.
+		$raw_table = $this->table_prefix().$table;
+		
 		// Quote the table name
 		$table = $this->quote_table($table);
 
@@ -295,7 +298,8 @@ class Kohana_Database_MySQL extends Database {
 			$column['ordinal_position'] = ++$count;
 			$column['extra']			= $row['Extra'];
 			$column['column_key']		= $row['Key'];
-
+			$column['table_name']		= $raw_table;
+			
 			switch ($column['type'])
 			{
 				case 'int':
