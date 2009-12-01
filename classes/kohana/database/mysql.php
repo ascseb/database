@@ -257,7 +257,10 @@ class Kohana_Database_MySQL extends Database {
 		$tables = array();
 		foreach ($result as $row)
 		{
-			$tables[] = $row[0];
+			$tables[current($row)] = array(
+				'table_name' => current($row),
+				'table_type' => 'BASE TABLE'
+			);
 		}
 
 		return $tables;
