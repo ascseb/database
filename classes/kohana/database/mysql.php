@@ -126,7 +126,7 @@ class Kohana_Database_MySQL extends Database {
 		}
 	}
 	
-	public function get_type($datatype)
+	public function datatype($datatype)
 	{
 		// The standard MySQL Types
 		static $types = array
@@ -297,7 +297,7 @@ class Kohana_Database_MySQL extends Database {
 		{
 			list($type, $length) = $this->_parse_type($row['Type']);
 			
-			$column = $this->get_type($type);
+			$column = $this->datatype($type);
 
 			$column['column_name']      = $row['Field'];
 			$column['column_default']   = $row['Default'];

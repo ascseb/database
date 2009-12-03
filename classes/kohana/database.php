@@ -166,7 +166,7 @@ abstract class Kohana_Database {
 	 * @param   string    the name of the datatype.
 	 * @return  array	the datatype info array.
 	 */
-	public function get_type($datatype)
+	public function datatype($datatype)
 	{
 		// The SQL Standard types
 		static $types = array
