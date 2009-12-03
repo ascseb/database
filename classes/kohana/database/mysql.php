@@ -178,6 +178,12 @@ class Kohana_Database_MySQL extends Database {
 			'year'                      => array('type' => 'datetime', 'format' => 'Y'),
 		);
 		
+		// Remove the zerofill constraint if it exists
+		if(strpos($datatype, 'zerofill') !== FALSE)
+		{
+			$datatype = str_replace(' zerofill', '', $datatype);
+		}
+		
 		// If we can find the datatype return it
 		if(isset($types[$datatype]))
 		{
