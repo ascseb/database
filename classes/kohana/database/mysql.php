@@ -12,40 +12,6 @@ class Kohana_Database_MySQL extends Database {
 	/**
 	 * @var array   MySQL types
 	 */
-	protected static $_types = array
-	(
-		'bool'                      => array('type' => 'bool'),
-		'bigint unsigned'           => array('type' => 'int', 'min' => '0', 'max' => '18446744073709551615'),
-		'datetime'                  => array('type' => 'string'),
-		'decimal unsigned'          => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
-		'double'                    => array('type' => 'float'),
-		'double precision unsigned' => array('type' => 'float', 'min' => '0'),
-		'double unsigned'           => array('type' => 'float', 'min' => '0'),
-		'enum'                      => array('type' => 'string'),
-		'fixed'                     => array('type' => 'float', 'exact' => TRUE),
-		'fixed unsigned'            => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
-		'float unsigned'            => array('type' => 'float', 'min' => '0'),
-		'int unsigned'              => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
-		'integer unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
-		'longblob'                  => array('type' => 'string', 'binary' => TRUE),
-		'longtext'                  => array('type' => 'string'),
-		'mediumblob'                => array('type' => 'string', 'binary' => TRUE),
-		'mediumint'                 => array('type' => 'int', 'min' => '-8388608', 'max' => '8388607'),
-		'mediumint unsigned'        => array('type' => 'int', 'min' => '0', 'max' => '16777215'),
-		'mediumtext'                => array('type' => 'string'),
-		'national varchar'          => array('type' => 'string'),
-		'numeric unsigned'          => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
-		'nvarchar'                  => array('type' => 'string'),
-		'real unsigned'             => array('type' => 'float', 'min' => '0'),
-		'set'                       => array('type' => 'string'),
-		'smallint unsigned'         => array('type' => 'int', 'min' => '0', 'max' => '65535'),
-		'text'                      => array('type' => 'string'),
-		'tinyblob'                  => array('type' => 'string', 'binary' => TRUE),
-		'tinyint'                   => array('type' => 'int', 'min' => '-128', 'max' => '127'),
-		'tinyint unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '255'),
-		'tinytext'                  => array('type' => 'string'),
-		'year'                      => array('type' => 'string'),
-	);
 
 	// Use SET NAMES to set the character set
 	protected static $_set_names;
@@ -159,6 +125,68 @@ class Kohana_Database_MySQL extends Database {
 				mysql_errno($this->_connection));
 		}
 	}
+	
+	public function get_type($datatype)
+	{
+		// The standard MySQL Types
+		static $types = array
+		(
+			// Boolean types
+			'bool'                      => array('type' => 'bool'),
+			
+			// Binary types
+			'tinyblob'                  => array('type' => 'binary', 'exact' => FALSE, 'character_maximum_length' => '255'),
+			'longblob'                  => array('type' => 'binary', 'exact' => FALSE, 'character_maximum_length' => '4294967295'),
+			'mediumblob'                => array('type' => 'binary', 'exact' => FALSE, 'character_maximum_length' => '16777215'),
+			
+			// Exact floating point types
+			'decimal'					=> array('type'	=> 'float', 'exact' => TRUE),
+			'fixed'                     => array('type' => 'float', 'exact' => TRUE),
+			'decimal unsigned'          => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
+			'numeric unsigned'          => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
+			'fixed unsigned'            => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
+			
+			// Non-exact floating point types
+			'double'                    => array('type' => 'float', 'exact' => FALSE),
+			'double precision unsigned' => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
+			'double unsigned'           => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
+			'real unsigned'             => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
+			'float unsigned'            => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
+		
+			// Integer types
+			'bigint unsigned'           => array('type' => 'int', 'min' => '0', 'max' => '18446744073709551615'),
+			'int unsigned'              => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
+			'integer unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
+			'mediumint'                 => array('type' => 'int', 'min' => '-8388608', 'max' => '8388607'),
+			'mediumint unsigned'        => array('type' => 'int', 'min' => '0', 'max' => '16777215'),
+			'smallint unsigned'         => array('type' => 'int', 'min' => '0', 'max' => '65535'),
+			'tinyint'                   => array('type' => 'int', 'min' => '-128', 'max' => '127'),
+			'tinyint unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '255'),
+		
+			// String types
+			'longtext'                  => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '4294967295'),
+			'mediumtext'                => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '16777215'),
+			'text'                      => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '65535'),
+			'tinytext'                  => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '255'),
+			'enum'                      => array('type' => 'string', 'exact' => FALSE),
+			'national varchar'          => array('type' => 'string', 'exact' => FALSE),
+			'nvarchar'                  => array('type' => 'string', 'exact' => FALSE),
+			'set'                       => array('type' => 'string', 'exact' => FALSE),
+			
+			// Datetime types
+			'datetime'                  => array('type' => 'datetime', 'format' => 'Y-m-d H:i:s'),
+			'year'                      => array('type' => 'datetime', 'format' => 'Y'),
+		);
+		
+		// If we can find the datatype return it
+		if(isset($types[$datatype]))
+		{
+			return $types[$datatype];
+		}
+		
+		// Otherwise overload it to the parent.
+		return parent::get_type($datatype);
+	}
 
 	public function query($type, $sql, $as_object)
 	{
@@ -218,18 +246,21 @@ class Kohana_Database_MySQL extends Database {
 		if (is_string($like))
 		{
 			// Search for table names
-			$result = $this->query(Database::SELECT, 'SHOW TABLES LIKE '.$this->quote($like), FALSE);
+			$result = $this->query(Database::SELECT, 'SHOW FULL TABLES LIKE '.$this->quote($like), FALSE);
 		}
 		else
 		{
 			// Find all table names
-			$result = $this->query(Database::SELECT, 'SHOW TABLES', FALSE);
+			$result = $this->query(Database::SELECT, 'SHOW FULL TABLES', FALSE);
 		}
 
 		$tables = array();
 		foreach ($result as $row)
 		{
-			$tables[] = $row[0];
+			$tables[current($row)] = array(
+				'table_name' => reset($row),
+				'table_type' => next($row)
+			);
 		}
 
 		return $tables;
@@ -237,18 +268,21 @@ class Kohana_Database_MySQL extends Database {
 
 	public function list_columns($table, $like = NULL)
 	{
+		// Save the original name of the table with prefix.
+		$raw_table = $this->table_prefix().$table;
+		
 		// Quote the table name
 		$table = $this->quote_table($table);
 
 		if (is_string($like))
 		{
 			// Search for column names
-			$result = $this->query(Database::SELECT, 'SHOW COLUMNS FROM '.$table.' LIKE '.$this->quote($like), FALSE);
+			$result = $this->query(Database::SELECT, 'SHOW FULL COLUMNS FROM '.$table.' LIKE '.$this->quote($like), FALSE);
 		}
 		else
 		{
 			// Find all column names
-			$result = $this->query(Database::SELECT, 'SHOW COLUMNS FROM '.$table, FALSE);
+			$result = $this->query(Database::SELECT, 'SHOW FULL COLUMNS FROM '.$table, FALSE);
 		}
 
 		$count = 0;
@@ -256,53 +290,35 @@ class Kohana_Database_MySQL extends Database {
 		foreach ($result as $row)
 		{
 			list($type, $length) = $this->_parse_type($row['Type']);
-
-			if (isset(Database_MySQL::$_types[$type]))
-			{
-				$column = Database_MySQL::$_types[$type];
-			}
-			elseif (isset(Database::$_types[$type]))
-			{
-				$column = Database::$_types[$type];
-			}
-			else
-			{
-				$column = array();
-			}
+			
+			$column = $this->get_type($type);
 
 			$column['column_name']      = $row['Field'];
 			$column['column_default']   = $row['Default'];
+			$column['column_type']		= $row['Type'];
 			$column['data_type']        = $type;
-			$column['is_nullable']      = ($row['Null'] == 'YES');
+			$column['is_nullable']      = $row['Null'];
 			$column['ordinal_position'] = ++$count;
-
-			switch ($column['data_type'])
+			$column['extra']			= $row['Extra'];
+			$column['column_key']		= $row['Key'];
+			$column['table_name']		= $raw_table;
+			$column['privileges']		= explode(',', $row['Privileges']);
+			$column['comment']			= $row['Comment'];
+			
+			switch ($column['type'])
 			{
+				case 'int':
+					$column['numeric_precision'] = 0;
+					$column['numeric_scale'] = strlen((string) $column['max']);
+					break;
 				case 'binary':
-				case 'char':
-				case 'varbinary':
-				case 'varchar':
-					$column['character_maximum_length'] = $length;
+				case 'string':
+					$column['character_maximum_length'] = arr::get($column, 'character_maximum_length', $length);
+					break;
 				break;
-				case 'decimal':
+				case 'float':
 					list($column['numeric_precision'], $column['numeric_scale']) = explode(',', $length);
-				break;
-				case 'tinyblob':
-				case 'tinytext':
-					$column['character_maximum_length'] = 255;
-				break;
-				case 'blob':
-				case 'text':
-					$column['character_maximum_length'] = 65535;
-				break;
-				case 'mediumblob':
-				case 'mediumtext':
-					$column['character_maximum_length'] = 16777215;
-				break;
-				case 'longblob':
-				case 'longtext':
-					$column['character_maximum_length'] = 4294967295;
-				break;
+					break;
 			}
 
 			$columns[$row['Field']] = $column;
