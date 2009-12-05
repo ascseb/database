@@ -126,8 +126,8 @@ class Kohana_Database_MySQL extends Database {
 		}
 	}
 	
-	public function get_type($datatype)
-	{
+	public function datatype($datatype)
+	{		
 		// The standard MySQL Types
 		static $types = array
 		(
@@ -178,14 +178,22 @@ class Kohana_Database_MySQL extends Database {
 			'year'                      => array('type' => 'datetime', 'format' => 'Y'),
 		);
 		
+		// Zerofilled integers shouldnt break this
+		if(strpos($datatype, 'zerofill') !== FALSE)
+		{
+			// Remove it from the datatype
+			$datatype = str_replace(' zerofill', '', $datatype);
+		}
+		
 		// If we can find the datatype return it
 		if(isset($types[$datatype]))
 		{
+			// Return it
 			return $types[$datatype];
 		}
 		
 		// Otherwise overload it to the parent.
-		return parent::get_type($datatype);
+		return parent::datatype($datatype);
 	}
 
 	public function query($type, $sql, $as_object)
@@ -255,12 +263,18 @@ class Kohana_Database_MySQL extends Database {
 		}
 
 		$tables = array();
+		
 		foreach ($result as $row)
 		{
-			$tables[current($row)] = array(
+			$tables[reset($row)] = array(
 				'table_name' => reset($row),
 				'table_type' => next($row)
 			);
+		}
+		
+		if(count($result) === 1)
+		{
+			$tables = reset($tables);
 		}
 
 		return $tables;
@@ -289,9 +303,9 @@ class Kohana_Database_MySQL extends Database {
 		$columns = array();
 		foreach ($result as $row)
 		{
-			list($type, $length) = $this->_parse_type($row['Type']);
+			list($type, $parameters) = $this->_parse_type($row['Type']);
 			
-			$column = $this->get_type($type);
+			$column = $this->datatype($type);
 
 			$column['column_name']      = $row['Field'];
 			$column['column_default']   = $row['Default'];
@@ -304,6 +318,12 @@ class Kohana_Database_MySQL extends Database {
 			$column['table_name']		= $raw_table;
 			$column['privileges']		= explode(',', $row['Privileges']);
 			$column['comment']			= $row['Comment'];
+			$column['parameters']		= explode(',', $parameters);
+			
+			if( ! isset($column['type']))
+			{
+				die(Kohana::debug($row));
+			}
 			
 			switch ($column['type'])
 			{
@@ -313,18 +333,18 @@ class Kohana_Database_MySQL extends Database {
 					break;
 				case 'binary':
 				case 'string':
-					$column['character_maximum_length'] = arr::get($column, 'character_maximum_length', $length);
+					$column['character_maximum_length'] = arr::get($column, 'character_maximum_length', $parameters);
 					break;
 				break;
 				case 'float':
-					list($column['numeric_precision'], $column['numeric_scale']) = explode(',', $length);
+					list($column['numeric_precision'], $column['numeric_scale']) = $column['parameters'];
 					break;
 			}
 
 			$columns[$row['Field']] = $column;
 		}
 
-		return $columns;
+		return count($columns) == 1 ? reset($columns) : $columns;
 	}
 
 	public function escape($value)
