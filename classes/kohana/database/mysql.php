@@ -135,9 +135,9 @@ class Kohana_Database_MySQL extends Database {
 			'bool'                      => array('type' => 'bool'),
 			
 			// Binary types
-			'tinyblob'                  => array('type' => 'binary', 'exact' => FALSE, 'character_maximum_length' => '255'),
-			'longblob'                  => array('type' => 'binary', 'exact' => FALSE, 'character_maximum_length' => '4294967295'),
-			'mediumblob'                => array('type' => 'binary', 'exact' => FALSE, 'character_maximum_length' => '16777215'),
+			'tinyblob'                  => array('type' => 'string', 'binary' => TRUE, 'character_maximum_length' => '255'),
+			'longblob'                  => array('type' => 'string', 'binary' => TRUE, 'character_maximum_length' => '4294967295'),
+			'mediumblob'                => array('type' => 'string', 'binary' => TRUE, 'character_maximum_length' => '16777215'),
 			
 			// Exact floating point types
 			'decimal'					=> array('type'	=> 'float', 'exact' => TRUE),
@@ -147,11 +147,11 @@ class Kohana_Database_MySQL extends Database {
 			'fixed unsigned'            => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
 			
 			// Non-exact floating point types
-			'double'                    => array('type' => 'float', 'exact' => FALSE),
-			'double precision unsigned' => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
-			'double unsigned'           => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
-			'real unsigned'             => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
-			'float unsigned'            => array('type' => 'float', 'exact' => FALSE, 'min' => '0'),
+			'double'                    => array('type' => 'float'),
+			'double precision unsigned' => array('type' => 'float', 'min' => '0'),
+			'double unsigned'           => array('type' => 'float', 'min' => '0'),
+			'real unsigned'             => array('type' => 'float', 'min' => '0'),
+			'float unsigned'            => array('type' => 'float', 'min' => '0'),
 		
 			// Integer types
 			'bigint unsigned'           => array('type' => 'int', 'min' => '0', 'max' => '18446744073709551615'),
@@ -164,14 +164,14 @@ class Kohana_Database_MySQL extends Database {
 			'tinyint unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '255'),
 		
 			// String types
-			'longtext'                  => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '4294967295'),
-			'mediumtext'                => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '16777215'),
-			'text'                      => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '65535'),
-			'tinytext'                  => array('type' => 'string', 'exact' => FALSE, 'character_maximum_length' => '255'),
-			'enum'                      => array('type' => 'string', 'exact' => FALSE),
-			'national varchar'          => array('type' => 'string', 'exact' => FALSE),
-			'nvarchar'                  => array('type' => 'string', 'exact' => FALSE),
-			'set'                       => array('type' => 'string', 'exact' => FALSE),
+			'longtext'                  => array('type' => 'string', 'character_maximum_length' => '4294967295'),
+			'mediumtext'                => array('type' => 'string', 'character_maximum_length' => '16777215'),
+			'text'                      => array('type' => 'string', 'character_maximum_length' => '65535'),
+			'tinytext'                  => array('type' => 'string', 'character_maximum_length' => '255'),
+			'enum'                      => array('type' => 'string'),
+			'national varchar'          => array('type' => 'string'),
+			'nvarchar'                  => array('type' => 'string'),
+			'set'                       => array('type' => 'string'),
 			
 			// Datetime types
 			'datetime'                  => array('type' => 'datetime', 'format' => 'Y-m-d H:i:s'),
